@@ -14,7 +14,9 @@ jobs:
       - run: |
           rustup default stable
           rustup target add armv7-linux-androideabi aarch64-linux-android x86_64-linux-android
-      - run: cargo quad-apk build --release
+      - run: |
+          sed -i 's/^version = 4$/version = 3/' Cargo.lock
+          cargo quad-apk build --release
       - uses: actions/upload-artifact@v4
         with:
           name: essaim-apk
