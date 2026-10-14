@@ -1,1 +1,21 @@
-
+name: APK Android
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    container: notfl3/cargo-apk
+    defaults:
+      run:
+        working-directory: essaim-android
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          rustup default stable
+          rustup target add armv7-linux-androideabi aarch64-linux-android x86_64-linux-android
+      - run: cargo quad-apk build --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: essaim-apk
+          path: essaim-android/target/android-artifacts/release/apk/*.apk
